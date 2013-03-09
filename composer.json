@@ -1,0 +1,26 @@
+{
+    "name": "rc/phpcr-menunode-from-route-bundle",
+    "type": "symfony-bundle",
+    "description": "generate menus from routes multilanguage",
+    "keywords": ["menu", "nodes", "menunode", "multilanguage", "generate" , "PHPCR", "bundle"],
+    "homepage": "https://github.com/rafaelcalleja/PHPCRMenuNodeFromRoutesBundle.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rafael Calleja",
+            "email": "rafa.calleja@d-noise.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+		"jackalope/jackalope-doctrine-dbal": "dev-master"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": ">=2.1,<2.2-dev"
+    },
+    "autoload": {
+        "psr-0": { "RC\\PHPCRMenuNodeFromRoutesBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "RC/PHPCRMenuNodeFromRoutesBundle"
+}
