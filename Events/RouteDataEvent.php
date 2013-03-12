@@ -14,21 +14,6 @@ class RouteDataEvent extends Event
 		$this->dm = $event->getDocumentManager();
 	}
 	
-	
-
-	/*
-	 *
-	id: conocenos1
-	parent: lateral/conocenos
-	parent_label:
-	en: conocenos_en
-	es: conocenos
-	label:
-	en: Nuestra misión EN
-	es: Nuestra misión
-	uri: true
-	*/
-	
 	public function getLocale(){
 		return $this->document->getDefault('_locale');
 	}

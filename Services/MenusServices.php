@@ -35,9 +35,7 @@ class MenusServices {
 		}
 	}
 
-	/**
-	 * @return a Navigation instance with the specified information
-	 */
+	
 	public function createMenuItem($basename, $menuid, $label, $uri, $attributes = array()) {
 		$parent = $this->dm->find(null, $basename);
 		
@@ -50,25 +48,7 @@ class MenusServices {
 		
 		$menuitem = is_array($label) ? new MultilangMenuNode() : new MenuNode();
 
-		$metadata = $this->dm
-				->getClassMetadata(
-						"Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode");
-		$multi = $this->dm
-				->getClassMetadata(
-						"Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode");
-
-		if ($metadata->hasField('uri')) {
-			$maps = array("fieldName" => "uri", 
-						   "type" => "String",
-						   "translated" => false, 
-						   "name" => "uri",
-						   "multivalue" => false, 
-						   "assoc" => null);
-
-			$metadata->mapField($maps, $multi);
-			$metadata->mapField($maps, $metadata);
-
-		}
+		$this->fixUriException();
 
 		$menuitem->setParent($parent);
 		$menuitem->setName($menuid);
@@ -76,6 +56,7 @@ class MenusServices {
 		if ($attributes != array()) {
 			$menuitem->setAttributes($attributes);
 		}
+		
 		$this->dm->persist($menuitem);
 		
 
@@ -96,10 +77,7 @@ class MenusServices {
 		return $menuitem;
 	}
 	
-	public function getLabel($dest){
-		$block = $this->dm->find(null, $dest);
-		
-	}
+	
 	public function move_menu($source, $dest){
 		$block = $this->dm->find(null, $source);
 		$this->dm->move($block, $dest);
@@ -117,12 +95,19 @@ class MenusServices {
 		$menu->setName(basename($routeid));
 		$menu->setLabel($newtitle);
 		
-		$metadata = $this->dm
-		->getClassMetadata(
-				"Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode");
-		$multi = $this->dm
-		->getClassMetadata(
-				"Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode");
+		
+		
+		$this->fixUriException();
+		$menu->setUri($newroute->getPattern());
+		$this->dm->persist($menu);
+		$this->updateChild($menu->getChildren(), count(explode('/', $menu->getId()))-1, count(explode('/', $menu->getUri()))-1);
+		$this->dm->flush();
+		
+	}
+	
+	private function fixUriException(){
+		$metadata = $this->dm->getClassMetadata("Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode");
+		$multi = $this->dm->getClassMetadata("Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode");
 		
 		if ($metadata->hasField('uri')) {
 			$maps = array("fieldName" => "uri",
@@ -136,17 +121,6 @@ class MenusServices {
 			$metadata->mapField($maps, $metadata);
 		
 		}
-		
-
-		$menu->setUri($newroute->getPattern());
-		
-		$this->dm->flush($menu);
-		
-		$this->updateChild($menu->getChildren(), count(explode('/', $menu->getId()))-1, count(explode('/', $menu->getUri()))-1);
-		
-		
-		$this->dm->flush();
-		
 	}
 	
 	private function updateChild($hijos, $source_pos, $dest_pos){

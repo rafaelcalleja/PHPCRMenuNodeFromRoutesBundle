@@ -1,11 +1,8 @@
 <?php 
 namespace RC\PHPCRMenuNodeFromRoutesBundle\Events;
 
-use Symfony\Component\EventDispatcher\Event;
-use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteDataEvent;
-
 
 class RouteMoveEventsData extends RouteDataEvent
 {

@@ -31,11 +31,9 @@
 		
 		<service id="kernel.listener.menu.creator" class="%kernel.listener.menu.creator.class%">
     		<tag name="doctrine_phpcr.event_listener" event="postPersist" />
-    		<tag name="doctrine_phpcr.event_listener" event="postUpdate" />
-    		<tag name="doctrine_phpcr.event_listener" event="preUpdate" />
+    		<!--<tag name="doctrine_phpcr.event_listener" event="postUpdate" />
+    		<tag name="doctrine_phpcr.event_listener" event="preUpdate" />-->
      		<tag name="doctrine_phpcr.event_listener" event="postMove" />
-     		<tag name="doctrine_phpcr.event_listener" event="postLoad" />
-     		<tag name="doctrine_phpcr.event_listener" event="postPersist" />
       		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
     		<argument type="service" id="event_dispatcher" />
 		</service>

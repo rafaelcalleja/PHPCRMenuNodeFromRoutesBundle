@@ -1,9 +1,6 @@
 <?php 
 namespace RC\PHPCRMenuNodeFromRoutesBundle\Events;
 
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteDataEvent;
 use RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteMoveEventsData;
 
@@ -59,17 +56,9 @@ class RouteListener {
 		}else{
 			$this->ms->createMenuItem($basename, $name, $label, $uri);
 		}
-// 		$label = array($event->getLocale() => $event->getLabel());
-// 		$uri = array($event->getLocale() => $event->getPath());
 		
 	}
-	
-	
-	
-	public function onRoutePreMoved(RouteMoveEventsData $event){
-// 		var_dump('premove');
-// 		$this->ms->updateMenu($event->getId(), $event->getDocument());
-	}
+
 	
 	public function onRouteMoved(RouteMoveEventsData $event){
  		$this->ms->move_menu($this->newSource($event), $this->newDest($event));
@@ -77,19 +66,11 @@ class RouteListener {
 	}
 	
 	public function onRoutePreEdited(RouteDataEvent $event){
-		//var_dump($event->getId());
-// 		if(!$this->pre_event) $this->pre_event = $event;
-// 		$this->preedited = true;
-// 		var_dump('eddiasd', $event->getId(), $this->pre_event->getId(), $this->getId($event), $this->getId($this->pre_event));
-// 		$this->pre_event = $event;
-		//$this->ms->updateMenu($event->getId(), $event->getDocument());
+		
 	}
 	
 	public function onRouteEdited(RouteDataEvent $event){
-		//var_dump('eddiasd', $event->getId(), $this->pre_event->getId(), $this->getId($event), $this->getId($this->pre_event));
-		//$this->ms->updateMenu($event->getId(), $event->getDocument());
-		//die(var_dump($event->getPath(), $this->getId($event), $this->pre_event->getPath()));
-		
+				
 	}
 	
 }
