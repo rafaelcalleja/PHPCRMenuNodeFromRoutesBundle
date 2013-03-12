@@ -4,17 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="kernel.subscriber.rc.route.subscriber.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteSubscriber</parameter>
         <parameter key="rc.route.added.listener.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteListener</parameter>
-        <parameter key="kernel.listener.menu.creator.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\EventDispatcher</parameter>
         <parameter key="rc.phpcrmenu.menu.service.class">RC\PHPCRMenuNodeFromRoutesBundle\Services\MenusServices</parameter>
         <parameter key="rc.phpcrmenu.root">root</parameter>
     </parameters>
     
 	<services>
-		<service id="kernel.subscriber.rc.route.subscriber" class="%kernel.subscriber.rc.route.subscriber.class%">
-	    	<tag name="kernel.event_subscriber" />
-		</service>
+		
 		
 		<service id="rc.route.added.listener" class="%rc.route.added.listener.class%">
 		 	<tag name="kernel.event_listener" event="rc.route.added" method="onRouteAdded" />
@@ -29,14 +25,7 @@
 		 	<argument>%rc.phpcrmenu.root%</argument>
 		</service>
 		
-		<service id="kernel.listener.menu.creator" class="%kernel.listener.menu.creator.class%">
-    		<tag name="doctrine_phpcr.event_listener" event="postPersist" />
-    		<!--<tag name="doctrine_phpcr.event_listener" event="postUpdate" />
-    		<tag name="doctrine_phpcr.event_listener" event="preUpdate" />-->
-     		<tag name="doctrine_phpcr.event_listener" event="postMove" />
-      		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
-    		<argument type="service" id="event_dispatcher" />
-		</service>
+		
 		
 		<service id="rc.phpcrmenu.menu.service" class="%rc.phpcrmenu.menu.service.class%">
     		<argument type="service" id="doctrine_phpcr.odm.document_manager" />

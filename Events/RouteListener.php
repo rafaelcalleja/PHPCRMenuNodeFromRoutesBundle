@@ -1,8 +1,8 @@
 <?php 
 namespace RC\PHPCRMenuNodeFromRoutesBundle\Events;
 
-use RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteDataEvent;
-use RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteMoveEventsData;
+use RC\PHPCRRouteEventsBundle\Events\RouteDataEvent;
+use RC\PHPCRRouteEventsBundle\Events\RouteMoveEventsData;
 
 class RouteListener {
 	protected $routebase, $menubase, $menuname, $ms;
