@@ -7,11 +7,14 @@ use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 class RouteDataEvent extends Event
 {
 	protected $document, $dm;
+	
 
-	public function __construct(LifecycleEventArgs $event){
+	public function __construct($event){
 		$this->document = $event->getDocument();
 		$this->dm = $event->getDocumentManager();
 	}
+	
+	
 
 	/*
 	 *
@@ -32,15 +35,26 @@ class RouteDataEvent extends Event
 	
 	public function getPath(){
 		return $this->document->getPattern();
+		
 	}
 	
 	public function getId(){
-		var_dump(get_class($this->document->getRouteContent()));
 		return $this->document->getId();
 	}
 	
 	public function getLabel(){
+		if((method_exists($this->document->getRouteContent(), 'getId'))){
+			$translation = $this->dm->findTranslation(get_class($this->document->getRouteContent()), $this->document->getRouteContent()->getId(), $this->getLocale());
+			if(method_exists($translation, 'getTitle')) {
+				return $translation->getTitle();
+			}
+		}
 		
-		return (method_exists($this->document->getRouteContent(), 'getTitle')) ? $this->document->getRouteContent()->getTitle() : false;
+		return false;
+	}
+	
+	
+	public function getDocument(){
+		return $this->document;
 	}
 }

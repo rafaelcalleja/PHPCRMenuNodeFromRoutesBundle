@@ -6,6 +6,9 @@
     <parameters>
         <parameter key="kernel.subscriber.rc.route.subscriber.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteSubscriber</parameter>
         <parameter key="rc.route.added.listener.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteListener</parameter>
+        <parameter key="kernel.listener.menu.creator.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\EventDispatcher</parameter>
+        <parameter key="rc.phpcrmenu.menu.service.class">RC\PHPCRMenuNodeFromRoutesBundle\Services\MenusServices</parameter>
+        <parameter key="rc.phpcrmenu.root">root</parameter>
     </parameters>
     
 	<services>
@@ -15,6 +18,31 @@
 		
 		<service id="rc.route.added.listener" class="%rc.route.added.listener.class%">
 		 	<tag name="kernel.event_listener" event="rc.route.added" method="onRouteAdded" />
+		 	<tag name="kernel.event_listener" event="rc.route.pre.edited" method="onRoutePreEdited" />
+		 	<tag name="kernel.event_listener" event="rc.route.edited" method="onRouteEdited" />
+		 	<tag name="kernel.event_listener" event="rc.route.pre.move" method="onRoutePreMoved" />
+		 	<tag name="kernel.event_listener" event="rc.route.post.move" method="onRouteMoved" />
+		 	
+		 	<argument type="service" id="rc.phpcrmenu.menu.service" />
+		 	<argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
+		 	<argument>%symfony_cmf_menu.menu_basepath%</argument>
+		 	<argument>%rc.phpcrmenu.root%</argument>
+		</service>
+		
+		<service id="kernel.listener.menu.creator" class="%kernel.listener.menu.creator.class%">
+    		<tag name="doctrine_phpcr.event_listener" event="postPersist" />
+    		<tag name="doctrine_phpcr.event_listener" event="postUpdate" />
+    		<tag name="doctrine_phpcr.event_listener" event="preUpdate" />
+     		<tag name="doctrine_phpcr.event_listener" event="postMove" />
+     		<tag name="doctrine_phpcr.event_listener" event="postLoad" />
+     		<tag name="doctrine_phpcr.event_listener" event="postPersist" />
+      		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
+    		<argument type="service" id="event_dispatcher" />
+		</service>
+		
+		<service id="rc.phpcrmenu.menu.service" class="%rc.phpcrmenu.menu.service.class%">
+    		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
+    		<argument>%locales%</argument>
 		</service>
 		
 	</services>

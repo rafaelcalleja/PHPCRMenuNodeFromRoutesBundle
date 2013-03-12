@@ -15,6 +15,7 @@ class RouteSubscriber implements EventSubscriberInterface
 						array('onKernelResponsePost', 0),
 				),
 				'rc.route.added'     => array('onRouteAdded', 0),
+				'rc.route.edited'     => array('onRouteEdited', 99),
 		);
 	}
 
@@ -30,5 +31,8 @@ class RouteSubscriber implements EventSubscriberInterface
 	}
 
 	public function onRouteAdded(RouteDataEvent $event){
+	}
+	
+	public function onRouteEdited(RouteDataEvent $event){
 	}
 }
