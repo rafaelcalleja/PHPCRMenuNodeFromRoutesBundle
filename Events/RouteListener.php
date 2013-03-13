@@ -4,6 +4,7 @@ namespace RC\PHPCRMenuNodeFromRoutesBundle\Events;
 use RC\PHPCRRouteEventsBundle\Events\RouteDataEvent;
 use RC\PHPCRRouteEventsBundle\Events\RouteMoveEventsData;
 
+
 class RouteListener {
 	protected $routebase, $menubase, $menuname, $ms;
 	protected $preedited = false;
@@ -73,4 +74,5 @@ class RouteListener {
 				
 	}
 	
+
 }

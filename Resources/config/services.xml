@@ -6,11 +6,15 @@
     <parameters>
         <parameter key="rc.route.added.listener.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteListener</parameter>
         <parameter key="rc.phpcrmenu.menu.service.class">RC\PHPCRMenuNodeFromRoutesBundle\Services\MenusServices</parameter>
+        <parameter key="rc.postflush.event.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\ODMEvents</parameter>
         <parameter key="rc.phpcrmenu.root">root</parameter>
     </parameters>
     
 	<services>
 		
+<!--  		<service id="rc.postflush.event" class="%rc.postflush.event.class%">
+			<tag name="doctrine_phpcr.event_listener" event="prePersist" />
+		</service>-->		
 		
 		<service id="rc.route.added.listener" class="%rc.route.added.listener.class%">
 		 	<tag name="kernel.event_listener" event="rc.route.added" method="onRouteAdded" />
@@ -18,6 +22,7 @@
 		 	<tag name="kernel.event_listener" event="rc.route.edited" method="onRouteEdited" />
 		 	<tag name="kernel.event_listener" event="rc.route.pre.move" method="onRoutePreMoved" />
 		 	<tag name="kernel.event_listener" event="rc.route.post.move" method="onRouteMoved" />
+		 	
 		 	
 		 	<argument type="service" id="rc.phpcrmenu.menu.service" />
 		 	<argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>

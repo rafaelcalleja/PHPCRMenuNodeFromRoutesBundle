@@ -12,7 +12,7 @@ class MenusServices {
 
 	protected $dm, $locales;
 
-	public function __construct(DocumentManager $dm, $locales) {
+	public function __construct(DocumentManager $dm, $locales ) {
 		$this->dm = $dm;
 		$this->locales = $locales;
 	}
@@ -43,8 +43,11 @@ class MenusServices {
 		if (!$parent) {
 			NodeHelper::createPath($this->dm->getPhpcrSession(), $basename);
 			$parent = $this->dm->find(null, $basename);
+			
 		}
 		
+		
+		//$this->dm->getPhpcrSession()->getRootNode()->addNode($basename.'/'.$menuid);
 		
 		$menuitem = is_array($label) ? new MultilangMenuNode() : new MenuNode();
 
@@ -57,7 +60,7 @@ class MenusServices {
 			$menuitem->setAttributes($attributes);
 		}
 		
-		$this->dm->persist($menuitem);
+		//$this->dm->persist($menuitem);
 		
 
 		if (is_array($label)) {
@@ -72,7 +75,14 @@ class MenusServices {
 			$menuitem->setLabel($label);
 		}
 
+
 		$this->dm->persist($menuitem);
+		//$this->dm->getUnitOfWork()->clear();
+		var_dump($this->dm->getPhpcrSession()->hasPendingChanges());
+		//$this->dm->flush($menuitem);
+		
+		//$this->dm->detach($menuitem);
+		//$this->dm->flush($menuitem);
 		
 		return $menuitem;
 	}
