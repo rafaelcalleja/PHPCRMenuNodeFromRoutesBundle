@@ -3,6 +3,8 @@ namespace RC\PHPCRMenuNodeFromRoutesBundle\Events;
 
 use RC\PHPCRRouteEventsBundle\Events\RouteDataEvent;
 use RC\PHPCRRouteEventsBundle\Events\RouteMoveEventsData;
+use RC\PHPCRRouteEventsBundle\Events\RouteFlushDataEvent;
+use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 
 
 class RouteListener {
@@ -66,10 +68,15 @@ class RouteListener {
  		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event));
 	}
 	
-	public function onRouteRemoved(RouteDataEvent $event){
-		$basename = $this->getParentId($event);
-		$name = $this->getName($event);
-		$this->ms->remove("$basename/$name");
+	public function onRouteRemoved(RouteFlushDataEvent $event){
+		$documents = $event->getRemoved();
+		foreach($documents as $d){
+			$newEvent = new RouteDataEvent(new LifecycleEventArgs($d, $event->getDocumentManager()));
+			$basename = $this->getParentId($newEvent);
+			$name = $this->getName($newEvent);
+			$this->ms->remove("$basename/$name");
+			
+		}
 	}
 	
 	public function onRoutePreEdited(RouteDataEvent $event){
