@@ -6,15 +6,10 @@
     <parameters>
         <parameter key="rc.route.added.listener.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\RouteListener</parameter>
         <parameter key="rc.phpcrmenu.menu.service.class">RC\PHPCRMenuNodeFromRoutesBundle\Services\MenusServices</parameter>
-        <parameter key="rc.postflush.event.class">RC\PHPCRMenuNodeFromRoutesBundle\Events\ODMEvents</parameter>
         <parameter key="rc.phpcrmenu.root">root</parameter>
     </parameters>
     
 	<services>
-		
-<!--  		<service id="rc.postflush.event" class="%rc.postflush.event.class%">
-			<tag name="doctrine_phpcr.event_listener" event="prePersist" />
-		</service>-->		
 		
 		<service id="rc.route.added.listener" class="%rc.route.added.listener.class%">
 		 	<tag name="kernel.event_listener" event="rc.route.added" method="onRouteAdded" />

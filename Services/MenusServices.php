@@ -5,6 +5,7 @@ use Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode;
 use Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\Common\EventManager;
 
 use PHPCR\Util\NodeHelper;
 
@@ -13,7 +14,7 @@ class MenusServices {
 	protected $dm, $locales;
 
 	public function __construct(DocumentManager $dm, $locales ) {
-		$this->dm = $dm;
+		$this->dm = $dm->create($dm->getPhpcrSession(),  $dm->getConfiguration(), new EventManager());
 		$this->locales = $locales;
 	}
 	
@@ -33,6 +34,9 @@ class MenusServices {
 			
 			$this->dm->persist($menuitem);
 		}
+		
+		$this->dm->flush();
+		
 	}
 
 	
@@ -47,7 +51,6 @@ class MenusServices {
 		}
 		
 		
-		//$this->dm->getPhpcrSession()->getRootNode()->addNode($basename.'/'.$menuid);
 		
 		$menuitem = is_array($label) ? new MultilangMenuNode() : new MenuNode();
 
@@ -77,12 +80,7 @@ class MenusServices {
 
 
 		$this->dm->persist($menuitem);
-		//$this->dm->getUnitOfWork()->clear();
-		var_dump($this->dm->getPhpcrSession()->hasPendingChanges());
-		//$this->dm->flush($menuitem);
-		
-		//$this->dm->detach($menuitem);
-		//$this->dm->flush($menuitem);
+		$this->dm->flush($menuitem);
 		
 		return $menuitem;
 	}
