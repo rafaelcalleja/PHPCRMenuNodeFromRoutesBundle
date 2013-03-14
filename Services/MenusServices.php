@@ -1,5 +1,7 @@
 <?php
 namespace RC\PHPCRMenuNodeFromRoutesBundle\Services;
+use RC\PHPCRSeoBundle\Document\SeoNode;
+
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode;
 use Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode;
@@ -85,7 +87,13 @@ class MenusServices {
 		return $menuitem;
 	}
 	
-	
+	public function remove($source){
+		$block = $this->dm->find(null, $source);
+		if($block instanceof MenuNode){
+			$this->dm->remove($block);
+			$this->dm->flush();
+		}
+	}
 	public function move_menu($source, $dest){
 		$block = $this->dm->find(null, $source);
 		$this->dm->move($block, $dest);

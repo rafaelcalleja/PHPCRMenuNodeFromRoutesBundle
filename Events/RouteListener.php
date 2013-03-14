@@ -66,6 +66,12 @@ class RouteListener {
  		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event));
 	}
 	
+	public function onRouteRemoved(RouteDataEvent $event){
+		$basename = $this->getParentId($event);
+		$name = $this->getName($event);
+		$this->ms->remove("$basename/$name");
+	}
+	
 	public function onRoutePreEdited(RouteDataEvent $event){
 		
 	}
