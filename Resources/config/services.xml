@@ -30,6 +30,7 @@
 		
 		<service id="rc.phpcrmenu.menu.service" class="%rc.phpcrmenu.menu.service.class%">
     		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
+    		<argument type="service" id="doctrine_phpcr.odm.locale_chooser" />
     		<argument>%locales%</argument>
 		</service>
 		

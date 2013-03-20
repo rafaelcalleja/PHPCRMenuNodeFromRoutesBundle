@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Cmf\Bundle\MenuBundle\Document\MenuNode;
 use Symfony\Cmf\Bundle\MenuBundle\Document\MultilangMenuNode;
 
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\Common\EventManager;
 
@@ -15,8 +16,9 @@ class MenusServices {
 
 	protected $dm, $locales;
 
-	public function __construct(DocumentManager $dm, $locales ) {
-		$this->dm = $dm->create($dm->getPhpcrSession(),  $dm->getConfiguration(), new EventManager());
+	public function __construct(DocumentManager $dm,LocaleChooser $localeChooser,$locales ) {
+		$this->dm = $dm->create($dm->getPhpcrSession(),  $dm->getConfiguration(), $dm->getEventManager() );
+		$this->dm->setLocaleChooserStrategy($localeChooser);
 		$this->locales = $locales;
 	}
 	
@@ -94,10 +96,11 @@ class MenusServices {
 			$this->dm->flush();
 		}
 	}
+	
 	public function move_menu($source, $dest){
 		$block = $this->dm->find(null, $source);
 		$this->dm->move($block, $dest);
-		$this->dm->flush($block);			
+		$this->dm->flush($block);
 	}
 	
 	public function updateMenu($menuid, $routeid, $oldname){
@@ -105,7 +108,6 @@ class MenusServices {
 		$newroute = $this->dm->find(null, $routeid);
 		$newtitle = $newroute->getRouteContent()->getTitle();
 		$menu = $this->dm->find(null, $menuid);
-		
 		
 		
 		$menu->setName(basename($routeid));
@@ -116,8 +118,9 @@ class MenusServices {
 		$this->fixUriException();
 		$menu->setUri($newroute->getPattern());
 		$this->dm->persist($menu);
+		$this->dm->flush($menu);
 		$this->updateChild($menu->getChildren(), count(explode('/', $menu->getId()))-1, count(explode('/', $menu->getUri()))-1);
-		$this->dm->flush();
+		
 		
 	}
 	
@@ -147,7 +150,9 @@ class MenusServices {
 				$uris[$dest_pos] = $ids[$source_pos];
 				$h->setUri(implode('/', $uris));
 				$this->dm->persist($h);
+				$this->dm->flush($h);
 				$this->updateChild($h->getChildren(), $source_pos, $dest_pos);
+				
 			}
 		}
 		
