@@ -103,10 +103,10 @@ class MenusServices {
 		$this->dm->flush($block);
 	}
 	
-	public function updateMenu($menuid, $routeid, $oldname){
+	public function updateMenu($menuid, $routeid, $oldnamem, $newtitle){
 		
 		$newroute = $this->dm->find(null, $routeid);
-		$newtitle = $newroute->getRouteContent()->getTitle();
+// 		$newtitle = $newroute->getRouteContent()->getTitle();
 		$menu = $this->dm->find(null, $menuid);
 		
 		

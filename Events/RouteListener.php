@@ -65,7 +65,7 @@ class RouteListener {
 	
 	public function onRouteMoved(RouteMoveEventsData $event){
  		$this->ms->move_menu($this->newSource($event), $this->newDest($event));
- 		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event));
+ 		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event), $event->getDocument()->getRouteContent()->getTitle());
 	}
 	
 	public function onRouteRemoved(RouteFlushDataEvent $event){
