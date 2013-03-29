@@ -11,6 +11,7 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\Common\EventManager;
 
 use PHPCR\Util\NodeHelper;
+use PHPCR\Util\PathHelper;
 
 class MenusServices {
 
@@ -122,6 +123,16 @@ class MenusServices {
 		$this->updateChild($menu->getChildren(), count(explode('/', $menu->getId()))-1, count(explode('/', $menu->getUri()))-1);
 		
 		
+	}
+	
+	public function reorderMenu($old, $new, $nodepath){
+		$reorder = NodeHelper::calculateOrderBefore($old, $new);
+		$node = $this->dm->getPhpcrSession()->getNode(PathHelper::absolutizePath($nodepath, '', false, false));
+		foreach ($reorder as $srcChildRelPath => $destChildRelPath) {
+			$node->orderBefore($srcChildRelPath, $destChildRelPath);
+		}
+		 
+		$this->dm->flush();
 	}
 	
 	private function fixUriException(){
