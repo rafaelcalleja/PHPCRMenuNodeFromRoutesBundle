@@ -21,7 +21,6 @@
 		 	
 		 	
 		 	<argument type="service" id="rc.phpcrmenu.menu.service" />
-		 	<argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
 		 	<argument>%symfony_cmf_menu.menu_basepath%</argument>
 		 	<argument>%rc.phpcrmenu.root%</argument>
 		</service>

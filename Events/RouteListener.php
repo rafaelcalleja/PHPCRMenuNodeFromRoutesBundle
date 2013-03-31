@@ -12,10 +12,9 @@ class RouteListener {
 	protected $preedited = false;
 	protected $pre_event;
 	
-	public function __construct($ms, $routebase, $menubase, $menuname){
+	public function __construct($ms, $menubase, $menuname){
 		$this->ms = $ms;
 		$this->menubase = $menubase;
-		$this->routebase = $routebase;	
 		$this->menuname = $menuname;
 	}
 	
@@ -24,11 +23,11 @@ class RouteListener {
 	}
 	
 	protected function getId(RouteDataEvent $event){
-		return str_replace( $this->routebase, $this->getMenuName($event), $event->getId());
+		return str_replace( $event->getDocument()->getPrefix(), $this->getMenuName($event), $event->getId());
 	}
 	
 	protected function getName(RouteDataEvent $event){
-		if( $event->getId() === $this->routebase ) return basename($this->getMenuName($event));
+		if( $event->getId() === $event->getDocument()->getPrefix() ) return basename($this->getMenuName($event));
 		return basename($event->getId());
 	}
 	
@@ -41,19 +40,15 @@ class RouteListener {
 	}
 	
 	protected function newSource($event){
-		return str_replace( $this->routebase, $this->getMenuName($event), $event->getSource());
+		return str_replace( $event->getDocument()->getPrefix(), $this->getMenuName($event), $event->getSource());
 	}
 	
 	protected function newDest($event){
-		return str_replace( $this->routebase, $this->getMenuName($event), $event->getDest());
+		return str_replace( $event->getDocument()->getPrefix(), $this->getMenuName($event), $event->getDest());
 	}
 	
 	public function onRouteAdded(RouteDataEvent $event){
-		//TODO Auto detect routebase ¿PROVIDER?
 		$basename = $this->getParentId($event);
-		//FIX
-		if( strpos($basename, $this->menubase) === FALSE )return false;
-		
 		$name = $this->getName($event);
 		$label = $event->getLabel();
 		$uri = $event->getPath();
