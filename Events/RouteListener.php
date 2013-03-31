@@ -49,11 +49,14 @@ class RouteListener {
 	}
 	
 	public function onRouteAdded(RouteDataEvent $event){
+		//TODO Auto detect routebase ¿PROVIDER?
 		$basename = $this->getParentId($event);
+		//FIX
+		if( strpos($basename, $this->menubase) === FALSE )return false;
+		
 		$name = $this->getName($event);
 		$label = $event->getLabel();
 		$uri = $event->getPath();
-		
 		if(!$label){
 			$this->ms->createMenuRoot($this->menubase, $this->menuname );
 		}else{

@@ -33,10 +33,12 @@ class MenusServices {
 				$parent = $this->dm->find(null, $menubase);
 			}
 			
+			$exists = $this->dm->find(null, "$menubase/$menuid".'_'.$l);
+			if($exists)continue;
+			
 			$menuitem = new MenuNode();
 			$menuitem->setParent($parent);
 			$menuitem->setName($menuid.'_'.$l);
-			
 			$this->dm->persist($menuitem);
 		}
 		
