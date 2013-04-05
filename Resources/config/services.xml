@@ -31,6 +31,7 @@
     		<argument type="service" id="doctrine_phpcr.odm.document_manager" />
     		<argument type="service" id="doctrine_phpcr.odm.locale_chooser" />
     		<argument>%locales%</argument>
+    		<argument type="service" id="logger" on-invalid="ignore" />
 		</service>
 		
 	</services>
