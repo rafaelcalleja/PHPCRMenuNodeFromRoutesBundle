@@ -66,7 +66,8 @@ class RouteListener {
  		$this->ms->move_menu($this->newSource($event), $this->newDest($event));
  		$newOrder = $event->getDocumentManager()->getPhpcrSession()->getNode(dirname($this->newDest($event)))->getNodeNames()->getArrayCopy();
  		$position = key(array_diff($old, $newOrder));
- 		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event), $event->getDocument()->getRouteContent()->getTitle());
+        $doc = $event->getDocumentManager()->findTranslation(null, $event->getDocument()->getRouteContent()->getId(), $event->getLocale());
+ 		$this->ms->updateMenu($this->newDest($event), $event->getDest(), $this->getName($event), $doc->getTitle());
  		$old = $newOrder;
  		$inserted = array_pop($newOrder);
  		array_splice($newOrder, $position, 0, $inserted );
